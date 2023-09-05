@@ -64,4 +64,43 @@ public class IntList {
         System.arraycopy(argList, 1, restList, 0, argList.length - 1);
         return new IntList(argList[0], IntList.of(restList));
     }
+
+    /** Returns an IntList identical to L, but with
+     *  each element incremented by x. L is not allowed
+      * to change. */
+    public static IntList incrList(IntList L, int x) {
+        if (L == null) {
+            return null;
+        }
+
+        IntList ret = new IntList(L.first + x, null);
+        IntList p = ret;
+        L = L.rest;
+        while (L != null) {
+            p.rest = new IntList(L.first + x, null);
+            L = L.rest;
+            p = p.rest;
+        }
+
+        return ret;
+    }
+
+    /** Returns an IntList identical to L, but with
+     * each element incremented by x. Not allowed to use
+     * the 'new' keyword. */
+    public static IntList dincrList(IntList L, int x) {
+        if (L == null) {
+            return null;
+        }
+
+        int size = L.size();
+        int[] array = new int[size];
+        int i = 0;
+        while (L != null) {
+            array[i] = L.first + x;
+            L = L.rest;
+            i++;
+        }
+        return IntList.of(array);
+    }
 }
