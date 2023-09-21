@@ -1,48 +1,58 @@
 package main.java;
 
-public class SLList {
-    private static class IntNode {
-        public int item;
-        public IntNode next;
+public class SLList<T> {
+    private static class ListNode<T> {
+        public T item;
+        public ListNode<T> next;
 
-        public IntNode(int i, IntNode n) {
+        public ListNode(T i, ListNode n) {
             item = i;
             next = n;
         }
     }
 
-    private IntNode sentinel;
+    private ListNode<T> sentinel;
     private int size;
 
     /** creates an empty list */
     public SLList() {
-        sentinel = new IntNode(63, null);
+        sentinel = new ListNode<T>(null, null);
         size = 0;
     }
 
-    public SLList(int x) {
-        sentinel = new IntNode(63, null);
-        sentinel.next = new IntNode(x, null);
+    public SLList(T x) {
+        sentinel = new ListNode<T>(null, null);
+        sentinel.next = new ListNode<T>(x, null);
         size = 1;
     }
 
-    public void addFirst(int x) {
-        sentinel.next = new IntNode(x, sentinel.next);
+    public SLList(T[] array) {
+        sentinel = new ListNode<T>(null, null);
+        size = 0;
+
+        for (int i = array.length - 1; i >= 0; i--) {
+            sentinel.next = new ListNode<T>(array[i], sentinel.next);
+            size += 1;
+        }
+    }
+
+    public void addFirst(T x) {
+        sentinel.next = new ListNode<T>(x, sentinel.next);
         size += 1;
     }
 
-    public int getFirst() {
+    public T getFirst() {
         return sentinel.next.item;
     }
 
-    public void addLast(int x) {
+    public void addLast(T x) {
         size += 1;
 
-        IntNode p = sentinel;
+        ListNode<T> p = sentinel;
         while (p.next != null) {
             p = p.next;
         }
-        p.next = new IntNode(x, null);
+        p.next = new ListNode<T>(x, null);
     }
 
     public int size() {
@@ -50,7 +60,7 @@ public class SLList {
     }
 
     public String toString() {
-        IntNode p = sentinel.next;
+        ListNode<T> p = sentinel.next;
         if (p == null) {
             return "";
         }
@@ -64,6 +74,25 @@ public class SLList {
         }
 
         return sb.toString();
+    }
+
+    public void deleteFirst() {
+        if (sentinel.next == null) {
+            return;
+        }
+
+        sentinel.next = sentinel.next.next;
+        size -= 1;
+    }
+
+    public T get(int i) {
+        ListNode<T> p = sentinel.next;
+        int s = 0;
+        while (s <= i && p != null) {
+            p = p.next;
+        }
+
+        return p == null ? null : p.item;
     }
 
     public static void main(String[] args) {
